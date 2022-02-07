@@ -25,11 +25,13 @@ const handleAuthentication = (
 ) => {
   const expiryDate = new Date(new Date().getTime() + expiresIn * 1000);
   const user = new User(email, localId, idToken, expiryDate);
+  localStorage.setItem('userData', JSON.stringify(user));
   return new AuthActions.AuthenticationSuccess({
     email: email,
     userId: localId,
     token: idToken,
     expiryDate: expiryDate,
+    redirect: true,
   });
 };
 
@@ -123,13 +125,47 @@ export class AuthEffects {
     }
     //{ dispatch: false }
   );
+  autoLogin = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.AUTO_LOGIN),
+      map(() => {
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        //console.log(userData);
+        if (!userData) return { type: 'DUMMY' };
+        const loadedUser = new User(
+          userData.email,
+          userData.id,
+          userData._token,
+          new Date(userData._tokenExpirationDate)
+        );
+        if (loadedUser.token) {
+          const expiresIn =
+            new Date(userData._tokenExpirationDate).getTime() -
+            new Date().getTime();
+          this.authService.setLogoutTimer(expiresIn);
+          //console.log('ere');
+          //this.user.next(loadedUser);
+          return new AuthActions.AuthenticationSuccess({
+            email: loadedUser.email,
+            userId: loadedUser.id,
+            token: loadedUser.token,
+            expiryDate: new Date(userData._tokenExpirationDate),
+            redirect: false,
+          });
+        }
+        return { type: 'DUMMY' };
+        //
+        // this.autoLogout(expiresIn);
+      })
+    );
+  });
 
   authRedirect = createEffect(
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.AUTHENTICATION_SUCCESS),
-        tap(() => {
-          this.router.navigate(['/']);
+        tap((authSuccessAction: AuthActions.AuthenticationSuccess) => {
+          if (authSuccessAction.payload.redirect) this.router.navigate(['/']);
         })
       );
     },
@@ -142,6 +178,7 @@ export class AuthEffects {
         ofType(AuthActions.LOGOUT),
         tap(() => {
           this.authService.clearLogoutTimer();
+          localStorage.removeItem('userData');
           this.router.navigate(['/auth']);
         })
       );
