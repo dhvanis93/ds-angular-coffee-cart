@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-xs-12 col-md-6 col-md-offset-3">
+    <!-- <div class="alert alert-danger" *ngIf="error">
+        <p>{{ error }}</p>
+      </div> -->
+    <app-alert
+      [message]="error"
+      *ngIf="error"
+      (close)="onHandleError()"
+    ></app-alert>
+    <!-- <ng-template appPlaceholder></ng-template> -->
+    <div *ngIf="isLoading" style="text-align: center">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+    <h2 style="margin-bottom: 6%">
+      Please Login Or Sign-Up First To Sip Coffee!
+    </h2>
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)" *ngIf="!isLoading">
+      <div class="form-gro">
+        <label for="email">E-mail</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          name="email"
+          ngModel
+          required
+          email
+        />
+      </div>
+      <div class="form-gro">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          name="password"
+          required
+          ngModel
+          minlength="6"
+        />
+      </div>
+      <div style="margin-top: 20px">
+        <button class="btn btn-primary" type="submit" [disabled]="!form.valid">
+          {{ isLoginMode ? "Login" : "Sign-Up" }}
+        </button>
+        |
+        <button class="btn btn-primary" type="button" (click)="onSwitchMode()">
+          Switch to {{ isLoginMode ? "Sign-Up" : "Login" }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

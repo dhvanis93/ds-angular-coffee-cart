@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-10">
+      <!-- <ul
+        class="list-group"
+        *ngIf="counter != 0 && counter % 3 == 0 && isOpen"
+      >
+        <li class="list-group-item">
+          <h4 class="list-group-item-heading" style="margin-bottom: 2%">
+            We are offering you an extra cup of Mocha at 4₹ (-50%) !!
+          </h4>
+          <p class="list-group-item-text">
+            <span class="badge offer" style="cursor: pointer; margin-right: 4%" (click)="onAdd()"
+              >Yes,of course!!</span
+            >
+            <span
+              class="badge offer"
+              style="cursor: pointer"
+              (click)="onClose()"
+              >Nah,I'll skip.</span
+            >
+          </p>
+        </li>
+      </ul> -->
+      <ul
+        class="list-group"
+        *ngFor="let item of (menu | async).menu; let i = index"
+      >
+        <div *ngIf="i != 9">
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">{{ item.name }}</h4>
+
+            <!-- <span class="quantity badge"> -->
+            <span
+              class="badge count"
+              style="cursor: pointer"
+              (click)="onIncrease(i)"
+              >+</span
+            >
+            <span class="badge count">{{ item.quantity }}</span>
+            <span
+              class="badge count"
+              style="cursor: pointer"
+              (click)="onDecrease(i, item.quantity)"
+              >-</span
+            >
+            <!-- </span> -->
+            <p class="list-group-item-text">[{{ item.ingredients }}]</p>
+            <p class="list-group-item-text">{{ item.price }}.00 ₹</p>
+            <p class="list-group-item-text" *ngIf="item.quantity > 0">
+              ({{ item.itemTotal }}.00 ₹)
+            </p>
+          </li>
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>

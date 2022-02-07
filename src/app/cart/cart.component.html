@@ -1,0 +1,78 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-10">
+      <div *ngIf="total == 0">
+        <h1>No coffee,go add some!</h1>
+      </div>
+      <app-alert
+        message="Congrats! Your order is placed successfully!!"
+        *ngIf="orderPlaced"
+        (close)="onCancelOrder()"
+      ></app-alert>
+      <div *ngIf="total > 0">
+        <h1 style="margin-bottom: 3%">
+          <span class="label label-default">Total: {{ total }} ₹</span>
+          <span
+            class="label label-default"
+            style="margin-left: 12%; cursor: pointer"
+            (click)="onPlaceOrder()"
+            >Place Order</span
+          >
+        </h1>
+        <table class="table table-hover" style="font-size: large">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Unit</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let item of (menu | async).menu; let i = index">
+            <tr *ngIf="item.quantity > 0">
+              <td>{{ item.name }}</td>
+              <td>
+                ₹ {{ item.price }}.00 * {{ item.quantity }}
+                <span
+                  class="badge"
+                  style="
+                    font-size: large;
+                    margin-left: 6%;
+                    cursor: pointer;
+                    width: 32px;
+                  "
+                  (click)="onDecrease(i, item.quantity)"
+                  >-</span
+                >
+                <span
+                  class="badge"
+                  style="
+                    font-size: large;
+                    margin-left: 1%;
+                    cursor: pointer;
+                    width: 32px;
+                  "
+                  (click)="onIncrease(i)"
+                  >+</span
+                >
+              </td>
+              <td>
+                ₹ {{ item.itemTotal }}.00
+                <span
+                  class="badge"
+                  style="
+                    font-size: large;
+                    margin-left: 6%;
+                    cursor: pointer;
+                    width: 32px;
+                  "
+                  (click)="onCancel(i)"
+                  >X</span
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

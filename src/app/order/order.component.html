@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-10">
+      <div *ngIf="isLoading" style="text-align: center">
+        <app-loading-spinner></app-loading-spinner>
+      </div>
+      <div>
+        <ul class="list-group" *ngFor="let item of orders; let i = index">
+          <li class="list-group-item">
+            <h4 class="list-group-item-heading">Total:{{ item.total }}.00 ₹</h4>
+            <h4 class="list-group-item-heading">Order Date:{{ item.date }}</h4>
+            <p
+              class="list-group-item-text"
+              *ngFor="let item of item.orderDetail"
+            >
+              {{ item.name }}=> ₹{{ item.price }}.00 * {{ item.quantity }}={{
+                item.itemTotal
+              }}.00 ₹
+            </p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
