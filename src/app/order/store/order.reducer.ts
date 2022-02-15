@@ -49,6 +49,11 @@ export function OrderReducer(
         userOrders: postUserOrders,
         allOrders: [...state.allOrders, ...postUserOrders],
       };
+    case OrderActions.CLEAR_STATE:
+      return {
+        ...state,
+        ...initialState,
+      };
     default:
       return state;
   }

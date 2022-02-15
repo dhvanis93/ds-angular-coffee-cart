@@ -3,6 +3,8 @@ import { Store } from '@ngrx/store';
 
 import * as FromApp from '../store/app.reducer';
 import * as AuthActions from '../auth/store/auth.actions';
+import * as SharedActions from '../shared/store/shared.actions';
+import * as OrderActions from '../order/store/order.actions';
 import { map, Subscription } from 'rxjs';
 
 @Component({
@@ -38,9 +40,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   onLogout() {
     this.store.dispatch(new AuthActions.Logout());
+    this.store.dispatch(new SharedActions.ClearState());
+    this.store.dispatch(new OrderActions.ClearState());
   }
   ngOnDestroy(): void {
     this.userSub.unsubscribe();
-    this.cartSub.unsubscribe()
+    this.cartSub.unsubscribe();
   }
 }

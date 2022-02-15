@@ -15,7 +15,12 @@
     <h2 style="margin-bottom: 6%">
       Please Login Or Sign-Up First To Sip Coffee!
     </h2>
-    <form #form="ngForm" (ngSubmit)="onSubmit(form)" *ngIf="!isLoading">
+    <form
+      #form="ngForm"
+      (ngSubmit)="onSubmit(form)"
+      *ngIf="!isLoading"
+      class="form-class"
+    >
       <div class="form-gro">
         <label for="email">E-mail</label>
         <input
@@ -41,11 +46,29 @@
         />
       </div>
       <div style="margin-top: 20px">
-        <button class="btn btn-primary" type="submit" [disabled]="!form.valid">
+        <button
+          class="btn btn-primary"
+          type="submit"
+          [disabled]="!form.valid"
+          style="
+            background-color: rgb(245, 161, 92);
+            color: black;
+            border-color: wheat;
+          "
+        >
           {{ isLoginMode ? "Login" : "Sign-Up" }}
         </button>
         |
-        <button class="btn btn-primary" type="button" (click)="onSwitchMode()">
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="onSwitchMode()"
+          style="
+            background-color: rgb(245, 161, 92);
+            color: black;
+            border-color: wheat;
+          "
+        >
           Switch to {{ isLoginMode ? "Sign-Up" : "Login" }}
         </button>
       </div>

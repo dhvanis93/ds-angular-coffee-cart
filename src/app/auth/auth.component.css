@@ -1,0 +1,14 @@
+.form-class input {
+  border-color: wheat;
+}
+.form-class input:focus {
+  background-color: wheat;
+  border-color: rgb(245, 161, 92);
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px wheat inset !important;
+  box-shadow: 0 0 0 30px wheat inset !important;
+}

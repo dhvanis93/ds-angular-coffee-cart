@@ -15,6 +15,7 @@ import * as AuthActions from '../auth/store/auth.actions';
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
+  styleUrls: ['./auth.component.css'],
 })
 export class AuthComponent implements OnInit, OnDestroy {
   constructor(private store: Store<FromApp.AppState>) {}

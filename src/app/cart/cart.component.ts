@@ -24,6 +24,7 @@ export class CartComponent implements OnInit, OnDestroy {
   constructor(private store: Store<FromApp.AppState>) {}
 
   ngOnInit(): void {
+    this.store.dispatch(new OrderActions.FetchOrders());
     this.menu = this.store.select('menu');
     this.cartSub = this.store
       .select('menu')
@@ -71,6 +72,9 @@ export class CartComponent implements OnInit, OnDestroy {
     //console.log(order);
     this.store.dispatch(new OrderActions.SetOrdersPost(order));
     this.store.dispatch(new OrderActions.SaveOrders());
+  }
+  onCancelCart() {
+    this.store.dispatch(new SharedActions.ClearState());
   }
   onCancelOrder() {
     this.orderPlaced = false;

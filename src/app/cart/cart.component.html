@@ -11,15 +11,21 @@
       ></app-alert>
       <div *ngIf="total > 0">
         <h1 style="margin-bottom: 3%">
-          <span class="label label-default">Total: {{ total }} ₹</span>
+          <span class="label label-default btn-cart">Total: {{ total }} ₹</span>
           <span
-            class="label label-default"
+            class="label label-default btn-cart"
             style="margin-left: 12%; cursor: pointer"
             (click)="onPlaceOrder()"
             >Place Order</span
           >
+          <span
+            class="label label-default btn-cart"
+            style="margin-left: 12%; cursor: pointer"
+            (click)="onCancelCart()"
+            >Cancel Order</span
+          >
         </h1>
-        <table class="table table-hover" style="font-size: large">
+        <table class="table" style="font-size: large">
           <thead>
             <tr>
               <th>Item</th>
@@ -33,7 +39,7 @@
               <td>
                 ₹ {{ item.price }}.00 * {{ item.quantity }}
                 <span
-                  class="badge"
+                  class="badge btn-cart"
                   style="
                     font-size: large;
                     margin-left: 6%;
@@ -44,7 +50,7 @@
                   >-</span
                 >
                 <span
-                  class="badge"
+                  class="badge btn-cart"
                   style="
                     font-size: large;
                     margin-left: 1%;
@@ -58,7 +64,7 @@
               <td>
                 ₹ {{ item.itemTotal }}.00
                 <span
-                  class="badge"
+                  class="badge btn-cart"
                   style="
                     font-size: large;
                     margin-left: 6%;

@@ -100,11 +100,20 @@ export function SharedReducer(
       };
 
     case SharedActions.PLACE_ORDER:
-      console.log(state);
+    case SharedActions.CLEAR_STATE:
+      // console.log(state);
       return {
         ...state,
         ...initialState,
       };
+
+    // case SharedActions.CLEAR_STATE:
+    //   console.log(state);
+    //   console.log(initialState);
+    //   return {
+    //     ...state,
+    //     ...initialState,
+    //   };
     default:
       return state;
   }

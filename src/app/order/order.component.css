@@ -1,0 +1,6 @@
+li {
+  border-color: wheat;
+}
+li:hover {
+  background-color: wheat;
+}
