@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './auth/auth.component';
 import { AuthGuard } from './auth/auth.guard';
@@ -30,6 +30,11 @@ const appRoutes: Routes = [
   {
     path: 'auth',
     component: AuthComponent,
+  },
+  {
+    path: '**',
+    pathMatch: 'full',
+    redirectTo: '/menu',
   },
 ];
 
