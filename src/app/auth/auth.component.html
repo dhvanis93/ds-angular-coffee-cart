@@ -31,7 +31,13 @@
           ngModel
           required
           email
+          #email="ngModel"
         />
+        <span
+          class="help-block"
+          *ngIf="!email.valid && (email.dirty || email.touched)"
+          >Please enter valid email.</span
+        >
       </div>
       <div class="form-gro">
         <label for="password">Password</label>
@@ -43,7 +49,13 @@
           required
           ngModel
           minlength="6"
+          #pwd="ngModel"
         />
+        <span
+          class="help-block"
+          *ngIf="!pwd.valid && (pwd.dirty || pwd.touched)"
+          >Please enter password that contains minimum 6 characters.</span
+        >
       </div>
       <div style="margin-top: 20px">
         <button
