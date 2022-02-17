@@ -13,7 +13,8 @@ li:hover {
   position: relative;
   /* background-color: #1affff; */
   background-color: wheat;
-  transform: rotate(-0.5deg);
+  /* transform: rotate(-0.5deg); */
+  transform: scaleY(1.2);
 }
 .offer {
   font-size: large;

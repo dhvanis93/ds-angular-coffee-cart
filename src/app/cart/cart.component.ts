@@ -7,6 +7,7 @@ import * as FromApp from '../store/app.reducer';
 import * as SharedActions from '../shared/store/shared.actions';
 import { Order } from '../order/order.model';
 import * as OrderActions from '../order/store/order.actions';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-cart',
@@ -21,7 +22,10 @@ export class CartComponent implements OnInit, OnDestroy {
   userSub: Subscription;
   userId: string;
   cartOrder: Menu[];
-  constructor(private store: Store<FromApp.AppState>) {}
+  constructor(
+    private store: Store<FromApp.AppState>,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.store.dispatch(new OrderActions.FetchOrders());
@@ -50,16 +54,26 @@ export class CartComponent implements OnInit, OnDestroy {
       .subscribe((userId) => (this.userId = userId));
     //this.store.dispatch(new OrderActions.FetchOrders());
   }
+  showSnackBar(content: string) {
+    this.snackBar.open(content, '', {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      duration: 1000,
+    });
+  }
   onDecrease(index: number, quantity: number) {
     if (quantity > 0) {
       this.store.dispatch(new SharedActions.DecrementCount(index));
+      this.showSnackBar('Cart is updated!');
     }
   }
   onIncrease(index: number) {
     this.store.dispatch(new SharedActions.IncrementCount(index));
+    this.showSnackBar('Cart is updated!');
   }
   onCancel(index: number) {
     this.store.dispatch(new SharedActions.RemoveFromCart(index));
+    this.showSnackBar('Item is removed from cart!');
   }
   onPlaceOrder() {
     this.orderPlaced = true;

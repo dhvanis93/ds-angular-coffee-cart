@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { StoreModule } from '@ngrx/store';
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { AuthComponent } from './auth/auth.component';
@@ -18,6 +20,7 @@ import { CartComponent } from './cart/cart.component';
 import { OrderComponent } from './order/order.component';
 import { OrderEffects } from './order/store/order.effects';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,8 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
     AppRoutingModule,
     StoreModule.forRoot(FromApp.appReducer),
     EffectsModule.forRoot([AuthEffects, OrderEffects]),
+    BrowserAnimationsModule,
+    MatSnackBarModule,
   ],
   providers: [
     {
