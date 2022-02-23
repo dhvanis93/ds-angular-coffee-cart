@@ -9,31 +9,167 @@ export interface State {
 }
 const initialState: State = {
   menu: [
-    new Menu('Espresso', 'espresso', 11, 0, 0),
-    new Menu('Espresso Macchiato', 'espresso,milk foam', 12, 0, 0),
-    new Menu('Cappucino', 'espresso,stramed milk,milk foam', 19, 0, 0),
     new Menu(
-      'Mocha',
-      'espresso,chocolate syrup,steamed milk,whipped cream',
+      'Espresso',
+      [
+        {
+          name: 'Espresso',
+          quantity: 30,
+        },
+      ],
       11,
       0,
       0
     ),
-    new Menu('Flat White', 'espresso,steamed milk', 18, 0, 0),
-    new Menu('Americano', 'espresso,water', 10, 0, 0),
-    new Menu('Cafe Latte', 'espresso,steamed milk,milk foam', 16, 0, 0),
-    new Menu('Espresso Con Panna', 'espresso,whipped cream', 14, 0, 0),
     new Menu(
-      'Cafe Breve',
-      'espresso,steamed milk,steamed cream,milk foam',
-      15,
+      'Espresso Macchiato',
+      [
+        {
+          name: 'Espresso',
+          quantity: 30,
+        },
+        {
+          name: 'Milk Foam',
+          quantity: 15,
+        },
+      ],
+      12,
       0,
       0
     ),
     new Menu(
-      '(Discounted) Mocha',
-      'espresso,chocolate syrup,steamed milk,whipped cream',
-      4,
+      'Cappucino',
+      [
+        {
+          name: 'Espresso',
+          quantity: 30,
+        },
+        {
+          name: 'Steamed Milk',
+          quantity: 20,
+        },
+        {
+          name: 'Milk Foam',
+          quantity: 50,
+        },
+      ],
+      19,
+      0,
+      0
+    ),
+    new Menu(
+      'Mocha',
+      [
+        {
+          name: 'Espresso',
+          quantity: 30,
+        },
+        {
+          name: 'Chocolate Syrup',
+          quantity: 20,
+        },
+        {
+          name: 'Steamed Milk',
+          quantity: 25,
+        },
+        {
+          name: 'Whipped Cream',
+          quantity: 25,
+        },
+      ],
+      11,
+      0,
+      0
+    ),
+    new Menu(
+      'Flat White',
+      [
+        {
+          name: 'Espresso',
+          quantity: 30,
+        },
+        {
+          name: 'Steamed Milk',
+          quantity: 50,
+        },
+      ],
+      18,
+      0,
+      0
+    ),
+    new Menu(
+      'Americano',
+      [
+        {
+          name: 'Espresso',
+          quantity: 30,
+        },
+        {
+          name: 'Water',
+          quantity: 70,
+        },
+      ],
+      10,
+      0,
+      0
+    ),
+    new Menu(
+      'Cafe Latte',
+      [
+        {
+          name: 'Espresso',
+          quantity: 30,
+        },
+        {
+          name: 'Steamed Milk',
+          quantity: 50,
+        },
+        {
+          name: 'Milk Foam',
+          quantity: 20,
+        },
+      ],
+      16,
+      0,
+      0
+    ),
+    new Menu(
+      'Espresso Con Panna',
+      [
+        {
+          name: 'Espresso',
+          quantity: 30,
+        },
+        {
+          name: 'Whipped Cream',
+          quantity: 15,
+        },
+      ],
+      14,
+      0,
+      0
+    ),
+    new Menu(
+      'Cafe Breve',
+      [
+        {
+          name: 'Espresso',
+          quantity: 25,
+        },
+        {
+          name: 'Steamed Milk',
+          quantity: 30,
+        },
+        {
+          name: 'Steamed Cream',
+          quantity: 30,
+        },
+        {
+          name: 'Milk Foam',
+          quantity: 15,
+        },
+      ],
+      15,
       0,
       0
     ),

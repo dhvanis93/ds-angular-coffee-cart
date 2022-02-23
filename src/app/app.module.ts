@@ -7,6 +7,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -31,6 +32,7 @@ import { SharedModule } from './shared/shared.module';
     EffectsModule.forRoot([AuthEffects, OrderEffects]),
     BrowserAnimationsModule,
     MatSnackBarModule,
+    MatMenuModule,
   ],
   providers: [
     {

@@ -45,11 +45,23 @@
               >-</span
             >
             <!-- </span> -->
-            <p class="list-group-item-text">[{{ item.ingredients }}]</p>
+            <!-- <p class="list-group-item-text">[{{ item.ingredients }}]</p> -->
             <p class="list-group-item-text">{{ item.price }}.00 ₹</p>
             <p class="list-group-item-text" *ngIf="item.quantity > 0">
               ({{ item.itemTotal }}.00 ₹)
             </p>
+            <button
+              mat-flat-button
+              class="list-group-item-text"
+              [matMenuTriggerFor]="beforeMenu"
+            >
+              Ingredients
+            </button>
+            <mat-menu #beforeMenu="matMenu" yPosition="below" xPosition="after">
+              <p mat-menu-item *ngFor="let ingredient of item.ingredients">
+                {{ ingredient.name }} {{ ingredient.quantity }}%
+              </p>
+            </mat-menu>
           </li>
         </div>
       </ul>

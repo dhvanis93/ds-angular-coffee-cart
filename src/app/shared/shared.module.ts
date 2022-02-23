@@ -14,6 +14,7 @@ import { DialogComponent } from './dialog/dialog.component';
     AlertComponent,
     CommonModule,
     DialogComponent,
+    MatButtonModule,
   ],
 })
 export class SharedModule {}

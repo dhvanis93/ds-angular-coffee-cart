@@ -20,3 +20,9 @@ li:hover {
   font-size: large;
   padding: 1% 1%;
 }
+button {
+  margin-top: 1%;
+  background-color: rgb(245, 161, 92);
+  border-radius: 12px;
+  color: white;
+}
