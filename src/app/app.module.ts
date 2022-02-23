@@ -1,8 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { StoreModule } from '@ngrx/store';
-
+import { FormsModule } from '@angular/forms';
+import { EffectsModule } from '@ngrx/effects';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -10,34 +14,19 @@ import { AuthComponent } from './auth/auth.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MenuComponent } from './menu/menu.component';
 import * as FromApp from './store/app.reducer';
-import { AlertComponent } from './shared/alert/alert.component';
-import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
-import { FormsModule } from '@angular/forms';
-import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './auth/store/auth.effects';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { CartComponent } from './cart/cart.component';
-import { OrderComponent } from './order/order.component';
 import { OrderEffects } from './order/store/order.effects';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    AuthComponent,
-    MenuComponent,
-    AlertComponent,
-    LoadingSpinnerComponent,
-    CartComponent,
-    OrderComponent,
-  ],
+  declarations: [AppComponent, HeaderComponent, AuthComponent, MenuComponent],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
+    SharedModule,
     StoreModule.forRoot(FromApp.appReducer),
     EffectsModule.forRoot([AuthEffects, OrderEffects]),
     BrowserAnimationsModule,

@@ -6,6 +6,8 @@ import * as AuthActions from '../auth/store/auth.actions';
 import * as SharedActions from '../shared/store/shared.actions';
 import * as OrderActions from '../order/store/order.actions';
 import { map, Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../shared/dialog/dialog.component';
 
 @Component({
   selector: 'app-header',
@@ -19,7 +21,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   totalCart: number;
   private userSub: Subscription;
 
-  constructor(private store: Store<FromApp.AppState>) {}
+  constructor(
+    private store: Store<FromApp.AppState>,
+    public dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.userSub = this.store
@@ -39,9 +44,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .subscribe((totalCart) => (this.totalCart = totalCart));
   }
   onLogout() {
-    this.store.dispatch(new AuthActions.Logout());
-    this.store.dispatch(new SharedActions.ClearState());
-    this.store.dispatch(new OrderActions.ClearState());
+    const dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        message: 'Are you sure do you want to Logout?',
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.store.dispatch(new AuthActions.Logout());
+        this.store.dispatch(new SharedActions.ClearState());
+        this.store.dispatch(new OrderActions.ClearState());
+      }
+    });
   }
   ngOnDestroy(): void {
     this.userSub.unsubscribe();

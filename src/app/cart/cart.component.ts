@@ -8,6 +8,8 @@ import * as SharedActions from '../shared/store/shared.actions';
 import { Order } from '../order/order.model';
 import * as OrderActions from '../order/store/order.actions';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../shared/dialog/dialog.component';
 
 @Component({
   selector: 'app-cart',
@@ -24,7 +26,8 @@ export class CartComponent implements OnInit, OnDestroy {
   cartOrder: Menu[];
   constructor(
     private store: Store<FromApp.AppState>,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -76,19 +79,37 @@ export class CartComponent implements OnInit, OnDestroy {
     this.showSnackBar('Item is removed from cart!');
   }
   onPlaceOrder() {
-    this.orderPlaced = true;
-    const order = new Order(
-      this.userId,
-      this.total,
-      new Date().toUTCString(),
-      this.cartOrder
-    );
-    //console.log(order);
-    this.store.dispatch(new OrderActions.SetOrdersPost(order));
-    this.store.dispatch(new OrderActions.SaveOrders());
+    const dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        message: 'Are you sure you want to place this order?',
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.orderPlaced = true;
+        const order = new Order(
+          this.userId,
+          this.total,
+          new Date().toUTCString(),
+          this.cartOrder
+        );
+        //console.log(order);
+        this.store.dispatch(new OrderActions.SetOrdersPost(order));
+        this.store.dispatch(new OrderActions.SaveOrders());
+      }
+    });
   }
   onCancelCart() {
-    this.store.dispatch(new SharedActions.ClearState());
+    const dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        message: 'Are you sure you want to clear the whole cart?',
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.store.dispatch(new SharedActions.ClearState());
+      }
+    });
   }
   onCancelOrder() {
     this.orderPlaced = false;

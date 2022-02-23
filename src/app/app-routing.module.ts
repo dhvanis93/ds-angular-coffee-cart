@@ -1,10 +1,8 @@
-import { Component, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './auth/auth.component';
 import { AuthGuard } from './auth/auth.guard';
-import { CartComponent } from './cart/cart.component';
 import { MenuComponent } from './menu/menu.component';
-import { OrderComponent } from './order/order.component';
 
 const appRoutes: Routes = [
   {
@@ -19,13 +17,12 @@ const appRoutes: Routes = [
   },
   {
     path: 'cart',
-    component: CartComponent,
-    canActivate: [AuthGuard],
+    loadChildren: () => import('./cart/cart.module').then((m) => m.CartModule),
   },
   {
     path: 'orders',
-    component: OrderComponent,
-    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./order/order.module').then((m) => m.OrderModule),
   },
   {
     path: 'auth',
