@@ -82,6 +82,7 @@ export class CartComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(DialogComponent, {
       data: {
         message: 'Are you sure you want to place this order?',
+        choice: 'yes',
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
