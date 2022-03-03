@@ -4,7 +4,10 @@
       <div *ngIf="isLoading" style="text-align: center">
         <app-loading-spinner></app-loading-spinner>
       </div>
-      <div>
+      <div *ngIf="orders.length == 0 && !isLoading">
+        <h1>No orders placed yet!</h1>
+      </div>
+      <div *ngIf="orders.length > 0">
         <ul class="list-group" *ngFor="let item of orders; let i = index">
           <li class="list-group-item">
             <h4 class="list-group-item-heading">Total:{{ item.total }}.00 ₹</h4>
