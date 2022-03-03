@@ -13,22 +13,18 @@ export class FetchOrders implements Action {
 }
 export class SaveOrders implements Action {
   readonly type = SAVE_ORDERS;
+  constructor(public payload: Order) {}
 }
 export class SetOrders implements Action {
   readonly type = SET_ORDERS;
 
   constructor(public payload: Order[]) {}
 }
-export class SetOrdersPost implements Action {
-  readonly type = SET_ORDERS_POST;
+// export class SetOrdersPost implements Action {
+//   readonly type = SET_ORDERS_POST;
 
-  constructor(public payload: Order) {}
-}
-export class SetUser implements Action {
-  readonly type = SET_USER;
-
-  constructor(public payload: string) {}
-}
+//   constructor(public payload: Order) {}
+// }
 export class ClearState implements Action {
   readonly type = CLEAR_STATE;
 }
@@ -36,6 +32,5 @@ export type OrderActions =
   | FetchOrders
   | SaveOrders
   | SetOrders
-  | SetUser
-  | SetOrdersPost
+  // | SetOrdersPost
   | ClearState;

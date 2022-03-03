@@ -1,20 +1,25 @@
 import { Menu } from '../shared/menu.model';
 
 export class Order {
-  public userId: string;
   public total: number;
-  public date: string;
-  public orderDetail: Menu[];
+  public orderDetail: {
+    name: string;
+    price: number;
+    quantity: number;
+    itemTotal: number;
+  }[];
+  public createdAt?: string;
 
   constructor(
-    userId: string,
     total: number,
-    date: string,
-    orderDetail: Menu[]
+    orderDetail: {
+      name: string;
+      price: number;
+      quantity: number;
+      itemTotal: number;
+    }[]
   ) {
-    this.userId = userId;
     this.total = total;
-    this.date = date;
     this.orderDetail = orderDetail;
   }
 }

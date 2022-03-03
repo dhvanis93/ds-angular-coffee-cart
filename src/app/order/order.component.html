@@ -8,7 +8,9 @@
         <ul class="list-group" *ngFor="let item of orders; let i = index">
           <li class="list-group-item">
             <h4 class="list-group-item-heading">Total:{{ item.total }}.00 ₹</h4>
-            <h4 class="list-group-item-heading">Order Date:{{ item.date }}</h4>
+            <h4 class="list-group-item-heading">
+              Order Date:{{ item.createdAt | date: "medium" }}
+            </h4>
             <p
               class="list-group-item-text"
               *ngFor="let item of item.orderDetail"

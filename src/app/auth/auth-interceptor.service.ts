@@ -25,14 +25,16 @@ export class AuthInterceptorService implements HttpInterceptor {
     return this.store.select('auth').pipe(
       take(1),
       map((authState) => {
+        // console.log(authState);
         return authState.user;
       }),
       exhaustMap((user) => {
+        // console.log(user);
         if (!user) {
           return next.handle(req);
         }
         const modifiedRequest = req.clone({
-          params: new HttpParams().set('auth', user.token),
+          headers: req.headers.set('Authorization', `Bearer ${user.token}`),
         });
         return next.handle(modifiedRequest);
       })

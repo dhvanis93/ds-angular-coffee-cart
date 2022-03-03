@@ -8,7 +8,9 @@ import { Order } from '../order.model';
 
 import * as OrderActions from './order.actions';
 import * as FromApp from '../../store/app.reducer';
+import { environment } from 'src/environments/environment';
 
+const apiURL = environment.api_url;
 @Injectable()
 export class OrderEffects {
   ordersFetch = createEffect(() => {
@@ -16,9 +18,7 @@ export class OrderEffects {
       ofType(OrderActions.FETCH_ORDERS),
       switchMap(() => {
         // console.log('ghere in fetch-orders');
-        return this.http.get<Order[]>(
-          'https://ds-angular-menu-cart-default-rtdb.firebaseio.com/orders.json'
-        );
+        return this.http.get<Order[]>(`${apiURL}orders`);
       }),
       map((orders) => {
         // console.log(orders);
@@ -33,11 +33,8 @@ export class OrderEffects {
         ofType(OrderActions.SAVE_ORDERS),
         withLatestFrom(this.store.select('orders')),
         switchMap(([actionData, ordersState]) => {
-        //   console.log(ordersState.allOrders);
-          return this.http.put(
-            'https://ds-angular-menu-cart-default-rtdb.firebaseio.com/orders.json',
-            ordersState.allOrders
-          );
+          //   console.log(ordersState.allOrders);
+          return this.http.post(`${apiURL}orders`, ordersState.order);
         })
       );
     },

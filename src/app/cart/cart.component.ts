@@ -21,7 +21,7 @@ export class CartComponent implements OnInit, OnDestroy {
   cartSub: Subscription;
   total: number;
   orderPlaced = false;
-  userSub: Subscription;
+  // userSub: Subscription;
   userId: string;
   cartOrder: Menu[];
   constructor(
@@ -31,7 +31,7 @@ export class CartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.store.dispatch(new OrderActions.FetchOrders());
+    // this.store.dispatch(new OrderActions.FetchOrders());
     this.menu = this.store.select('menu');
     this.cartSub = this.store
       .select('menu')
@@ -45,16 +45,16 @@ export class CartComponent implements OnInit, OnDestroy {
       )
       .subscribe((total) => (this.total = total));
 
-    this.userSub = this.store
-      .select('auth')
-      .pipe(
-        take(1),
-        map((authState) => {
-          // console.log(authState.user.id);
-          return authState.user.id;
-        })
-      )
-      .subscribe((userId) => (this.userId = userId));
+    // this.userSub = this.store
+    //   .select('auth')
+    //   .pipe(
+    //     take(1),
+    //     map((authState) => {
+    //       // console.log(authState.user.id);
+    //       return authState.user.id;
+    //     })
+    //   )
+    //   .subscribe((userId) => (this.userId = userId));
     //this.store.dispatch(new OrderActions.FetchOrders());
   }
   showSnackBar(content: string) {
@@ -89,14 +89,19 @@ export class CartComponent implements OnInit, OnDestroy {
       if (result) {
         this.orderPlaced = true;
         const order = new Order(
-          this.userId,
           this.total,
-          new Date().toUTCString(),
-          this.cartOrder
+          this.cartOrder.map((el) => {
+            return {
+              name: el.name,
+              price: el.price,
+              quantity: el.quantity,
+              itemTotal: el.itemTotal,
+            };
+          })
         );
-        //console.log(order);
-        this.store.dispatch(new OrderActions.SetOrdersPost(order));
-        this.store.dispatch(new OrderActions.SaveOrders());
+        // console.log(order);
+        // this.store.dispatch(new OrderActions.SetOrdersPost(order));
+        this.store.dispatch(new OrderActions.SaveOrders(order));
       }
     });
   }

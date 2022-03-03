@@ -12,36 +12,22 @@ import * as OrderActions from './store/order.actions';
 })
 export class OrderComponent implements OnInit, OnDestroy {
   isLoading = true;
-  userSub: Subscription;
   orderSub: Subscription;
   orders: Order[];
   constructor(private store: Store<FromApp.AppState>) {}
 
   ngOnInit(): void {
     // console.log('here');
-    this.userSub = this.store
-      .select('auth')
-      .pipe(
-        take(1),
-        map((authState) => {
-          // console.log(authState.user.id);
-          return authState.user.id;
-        })
-      )
-      .subscribe((userId) =>
-        this.store.dispatch(new OrderActions.SetUser(userId))
-      );
-
     this.store.dispatch(new OrderActions.FetchOrders());
     this.orderSub = this.store.select('orders').subscribe((orderState) => {
       // console.log(orderState);
       this.isLoading = orderState.loading;
-      this.orders = orderState.userOrders;
+      this.orders = orderState.orders;
+      // console.log(orderState.orders);
     });
   }
 
   ngOnDestroy(): void {
-    this.userSub.unsubscribe();
     this.orderSub.unsubscribe();
   }
 }

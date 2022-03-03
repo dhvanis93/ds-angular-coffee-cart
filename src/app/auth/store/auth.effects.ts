@@ -1,35 +1,40 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth.service';
 import { User } from '../user.model';
 import * as AuthActions from './auth.actions';
 
+const apiURL = environment.api_url;
+
 export interface AuthResponseData {
-  idToken: string;
-  email: string;
-  refreshToken: string;
+  user: {
+    email: string;
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  };
+  token: string;
   expiresIn: string;
-  localId: string;
-  registered?: boolean;
 }
 
 const handleAuthentication = (
   expiresIn: number,
   email: string,
-  localId: string,
-  idToken: string
+  userId: string,
+  token: string
 ) => {
   const expiryDate = new Date(new Date().getTime() + expiresIn * 1000);
-  const user = new User(email, localId, idToken, expiryDate);
+  const user = new User(email, userId, token, expiryDate);
   localStorage.setItem('userData', JSON.stringify(user));
   return new AuthActions.AuthenticationSuccess({
     email: email,
-    userId: localId,
-    token: idToken,
+    userId: userId,
+    token: token,
     expiryDate: expiryDate,
     redirect: true,
   });
@@ -37,20 +42,10 @@ const handleAuthentication = (
 
 const handleError = (errorRes: any) => {
   let errorMessage = 'An unknown error occured!';
-  if (!errorRes.error || !errorRes.error.error)
+  // console.log(errorRes);
+  if (!errorRes.error.message)
     return of(new AuthActions.AuthenticationFail(errorMessage));
-  switch (errorRes.error.error.message) {
-    case 'EMAIL_EXISTS':
-      errorMessage = 'This email exists already!';
-      break;
-    case 'EMAIL_NOT_FOUND':
-      errorMessage = 'This email does not exist. Please Sign Up first!';
-      break;
-    case 'INVALID_PASSWORD':
-      errorMessage = 'The password is incorrect. Please enter valid password!';
-      break;
-  }
-  return of(new AuthActions.AuthenticationFail(errorMessage));
+  return of(new AuthActions.AuthenticationFail(errorRes.error.message));
 };
 
 @Injectable()
@@ -60,28 +55,27 @@ export class AuthEffects {
       ofType(AuthActions.SIGNUP_START),
       switchMap((signupAction: AuthActions.SignupStart) => {
         return this.http
-          .post<AuthResponseData>(
-            'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' +
-              environment.firebaseApiKey,
-            {
-              email: signupAction.payload.email,
-              password: signupAction.payload.password,
-              returnSecureToken: true,
-            }
-          )
+          .post<AuthResponseData>(`${apiURL}auth/signup`, {
+            email: signupAction.payload.email,
+            password: signupAction.payload.password,
+          })
           .pipe(
             tap((resData) => {
-              this.authService.setLogoutTimer(+resData.expiresIn * 1000);
+              this.authService.setLogoutTimer(
+                +resData.expiresIn * 1000,
+                resData.token
+              );
             }),
             map((resData) => {
               return handleAuthentication(
                 +resData.expiresIn,
-                resData.email,
-                resData.localId,
-                resData.idToken
+                resData.user.email,
+                resData.user._id,
+                resData.token
               );
             }),
             catchError((errorRes) => {
+              // console.log(errorRes);
               return handleError(errorRes);
             })
           );
@@ -95,25 +89,23 @@ export class AuthEffects {
         ofType(AuthActions.LOGIN_START),
         switchMap((authData: AuthActions.LoginStart) => {
           return this.http
-            .post<AuthResponseData>(
-              'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +
-                environment.firebaseApiKey,
-              {
-                email: authData.payload.email,
-                password: authData.payload.password,
-                returnSecureToken: true,
-              }
-            )
+            .post<AuthResponseData>(`${apiURL}auth/login`, {
+              email: authData.payload.email,
+              password: authData.payload.password,
+            })
             .pipe(
               tap((resData) => {
-                this.authService.setLogoutTimer(+resData.expiresIn * 1000);
+                this.authService.setLogoutTimer(
+                  +resData.expiresIn * 1000,
+                  resData.token
+                );
               }),
               map((resData) => {
                 return handleAuthentication(
                   +resData.expiresIn,
-                  resData.email,
-                  resData.localId,
-                  resData.idToken
+                  resData.user.email,
+                  resData.user._id,
+                  resData.token
                 );
               }),
               catchError((errorRes) => {
@@ -142,7 +134,7 @@ export class AuthEffects {
           const expiresIn =
             new Date(userData._tokenExpirationDate).getTime() -
             new Date().getTime();
-          this.authService.setLogoutTimer(expiresIn);
+          this.authService.setLogoutTimer(expiresIn, loadedUser.token);
           //console.log('ere');
           //this.user.next(loadedUser);
           return new AuthActions.AuthenticationSuccess({
@@ -176,10 +168,24 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.LOGOUT),
-        tap(() => {
-          this.authService.clearLogoutTimer();
-          localStorage.removeItem('userData');
-          this.router.navigate(['/auth']);
+        switchMap((logoutData: AuthActions.Logout) => {
+          return this.http
+            .post(
+              `${apiURL}auth/logout`,
+              {},
+              {
+                headers: new HttpHeaders({
+                  Authorization: `Bearer ${logoutData.payload}`,
+                }),
+              }
+            )
+            .pipe(
+              tap(() => {
+                this.authService.clearLogoutTimer();
+                localStorage.removeItem('userData');
+                this.router.navigate(['/auth']);
+              })
+            );
         })
       );
     },

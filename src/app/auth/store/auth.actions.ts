@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { User } from '../user.model';
 
 export const SIGNUP_START = '[Auth] Signup Start';
 export const LOGIN_START = '[Auth] Login Start';
@@ -24,6 +25,7 @@ export class AuthenticationSuccess implements Action {
 
 export class Logout implements Action {
   readonly type = LOGOUT;
+  constructor(public payload: string) {}
 }
 export class LoginStart implements Action {
   readonly type = LOGIN_START;

@@ -8,6 +8,7 @@ import * as OrderActions from '../order/store/order.actions';
 import { map, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../shared/dialog/dialog.component';
+import { User } from '../auth/user.model';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +21,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   cartSub: Subscription;
   totalCart: number;
   private userSub: Subscription;
-
+  user: User;
   constructor(
     private store: Store<FromApp.AppState>,
     public dialog: MatDialog
@@ -31,6 +32,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .select('auth')
       .pipe(
         map((authState) => {
+          this.user = authState.user;
           return authState.user;
         })
       )
@@ -51,7 +53,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.store.dispatch(new AuthActions.Logout());
+        this.store.dispatch(new AuthActions.Logout(this.user.token));
         this.store.dispatch(new SharedActions.ClearState());
         this.store.dispatch(new OrderActions.ClearState());
       }
