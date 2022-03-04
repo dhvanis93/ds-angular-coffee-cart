@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class MenuComponent implements OnInit, OnDestroy {
   menu: Observable<{ menu: Menu[] }>;
   totalCart: number;
+  menuSubscription: Subscription;
   // isOpen = true;
   // counter = 0;
   constructor(
@@ -24,6 +25,12 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.menu = this.store.select('menu');
+    this.menuSubscription = this.menu.subscribe((data) => {
+      // console.log(data.menu.length);
+      if (data.menu.length == 0) {
+        this.store.dispatch(new SharedActions.FetchMenu());
+      }
+    });
   }
   showSnackBar() {
     this.snackBar.open('Cart is updated!', '', {
@@ -54,5 +61,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   //   this.isOpen = true;
   //   this.store.dispatch(new SharedActions.IncrementCount(9));
   // }
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.menuSubscription.unsubscribe();
+  }
 }

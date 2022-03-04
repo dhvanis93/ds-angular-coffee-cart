@@ -8,172 +8,7 @@ export interface State {
   total: number;
 }
 const initialState: State = {
-  menu: [
-    new Menu(
-      'Espresso',
-      [
-        {
-          name: 'Espresso',
-          quantity: 30,
-        },
-      ],
-      11,
-      0,
-      0
-    ),
-    new Menu(
-      'Espresso Macchiato',
-      [
-        {
-          name: 'Espresso',
-          quantity: 30,
-        },
-        {
-          name: 'Milk Foam',
-          quantity: 15,
-        },
-      ],
-      12,
-      0,
-      0
-    ),
-    new Menu(
-      'Cappucino',
-      [
-        {
-          name: 'Espresso',
-          quantity: 30,
-        },
-        {
-          name: 'Steamed Milk',
-          quantity: 20,
-        },
-        {
-          name: 'Milk Foam',
-          quantity: 50,
-        },
-      ],
-      19,
-      0,
-      0
-    ),
-    new Menu(
-      'Mocha',
-      [
-        {
-          name: 'Espresso',
-          quantity: 30,
-        },
-        {
-          name: 'Chocolate Syrup',
-          quantity: 20,
-        },
-        {
-          name: 'Steamed Milk',
-          quantity: 25,
-        },
-        {
-          name: 'Whipped Cream',
-          quantity: 25,
-        },
-      ],
-      11,
-      0,
-      0
-    ),
-    new Menu(
-      'Flat White',
-      [
-        {
-          name: 'Espresso',
-          quantity: 30,
-        },
-        {
-          name: 'Steamed Milk',
-          quantity: 50,
-        },
-      ],
-      18,
-      0,
-      0
-    ),
-    new Menu(
-      'Americano',
-      [
-        {
-          name: 'Espresso',
-          quantity: 30,
-        },
-        {
-          name: 'Water',
-          quantity: 70,
-        },
-      ],
-      10,
-      0,
-      0
-    ),
-    new Menu(
-      'Cafe Latte',
-      [
-        {
-          name: 'Espresso',
-          quantity: 30,
-        },
-        {
-          name: 'Steamed Milk',
-          quantity: 50,
-        },
-        {
-          name: 'Milk Foam',
-          quantity: 20,
-        },
-      ],
-      16,
-      0,
-      0
-    ),
-    new Menu(
-      'Espresso Con Panna',
-      [
-        {
-          name: 'Espresso',
-          quantity: 30,
-        },
-        {
-          name: 'Whipped Cream',
-          quantity: 15,
-        },
-      ],
-      14,
-      0,
-      0
-    ),
-    new Menu(
-      'Cafe Breve',
-      [
-        {
-          name: 'Espresso',
-          quantity: 25,
-        },
-        {
-          name: 'Steamed Milk',
-          quantity: 30,
-        },
-        {
-          name: 'Steamed Cream',
-          quantity: 30,
-        },
-        {
-          name: 'Milk Foam',
-          quantity: 15,
-        },
-      ],
-      15,
-      0,
-      0
-    ),
-  ],
+  menu: [],
   totalCart: 0,
   total: 0,
 };
@@ -183,6 +18,11 @@ export function SharedReducer(
   action: SharedActions.SharedActions
 ) {
   switch (action.type) {
+    case SharedActions.SAVE_MENU:
+      return {
+        ...state,
+        menu: [...action.payload],
+      };
     case SharedActions.INC_COUNT:
       //console.log(state);
       const item = state.menu[action.payload];
@@ -238,9 +78,23 @@ export function SharedReducer(
     case SharedActions.PLACE_ORDER:
     case SharedActions.CLEAR_STATE:
       // console.log(state);
+      // return {
+      //   ...state,
+      //   ...initialState,
+      // };
+      const initialMenu = [...state.menu].map((el) => {
+        return {
+          ...el,
+          itemTotal: 0,
+          quantity: 0,
+        };
+      });
+      // console.log(initialMenu);
       return {
         ...state,
-        ...initialState,
+        totalCart: 0,
+        total: 0,
+        menu: [...initialMenu],
       };
 
     // case SharedActions.CLEAR_STATE:

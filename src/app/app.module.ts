@@ -19,6 +19,7 @@ import { AuthEffects } from './auth/store/auth.effects';
 import { OrderEffects } from './order/store/order.effects';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { SharedModule } from './shared/shared.module';
+import { SharedEffects } from './shared/store/shared.effects';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent, AuthComponent, MenuComponent],
@@ -29,7 +30,7 @@ import { SharedModule } from './shared/shared.module';
     AppRoutingModule,
     SharedModule,
     StoreModule.forRoot(FromApp.appReducer),
-    EffectsModule.forRoot([AuthEffects, OrderEffects]),
+    EffectsModule.forRoot([AuthEffects, OrderEffects, SharedEffects]),
     BrowserAnimationsModule,
     MatSnackBarModule,
     MatMenuModule,
