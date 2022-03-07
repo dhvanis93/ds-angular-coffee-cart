@@ -20,7 +20,45 @@ export class SharedEffects {
         // console.log('here in effect');
         return this.http.get<Menu[]>(`${apiURL}menu`);
       }),
-      map((menu) => new SharedActions.SaveMenu(menu))
+      map((menu) => {
+        // console.log(menu);
+        const modifiedMenu = menu.map((el) => {
+          return {
+            name: el.name,
+            price: el.price,
+            ingredients: el.ingredients,
+            quantity: 0,
+            itemTotal: 0,
+          };
+        });
+        return new SharedActions.SaveMenu(modifiedMenu);
+      })
+    );
+  });
+
+  menuPost = createEffect(() => {
+    return this.action$.pipe(
+      ofType(SharedActions.POST_MENU),
+      switchMap((menuData: SharedActions.PostMenu) => {
+        // console.log(menuData);
+        return this.http.post<{
+          message: string;
+          data: {
+            name: string;
+            price: number;
+            ingredients: { name: string; quantity: number }[];
+          };
+        }>(`${apiURL}menu`, menuData.payload);
+      }),
+      map((resData) => {
+        const modifiedMenu = {
+          ...resData.data,
+          quantity: 0,
+          itemTotal: 0,
+        };
+        // console.log(modifiedMenu);
+        return new SharedActions.AddMenu(modifiedMenu);
+      })
     );
   });
   constructor(

@@ -26,3 +26,8 @@ button {
   border-radius: 12px;
   color: white;
 }
+.add-menu {
+  border: 1px solid wheat;
+  margin-bottom: 4%;
+  padding: 2%;
+}

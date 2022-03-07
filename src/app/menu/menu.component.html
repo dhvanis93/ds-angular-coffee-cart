@@ -22,11 +22,15 @@
           </p>
         </li>
       </ul> -->
+      <div *ngIf="isAdmin" class="list-group-item add-menu">
+        <h4 class="list-group-item-heading">New coffee in the house?</h4>
+        <button mat-flat-button (click)="onAddMenu()">Add In Menu</button>
+      </div>
       <ul
         class="list-group"
         *ngFor="let item of (menu | async).menu; let i = index"
       >
-        <div *ngIf="i != 9">
+        <div>
           <li class="list-group-item">
             <h4 class="list-group-item-heading">{{ item.name }}</h4>
 

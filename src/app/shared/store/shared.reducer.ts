@@ -19,10 +19,35 @@ export function SharedReducer(
 ) {
   switch (action.type) {
     case SharedActions.SAVE_MENU:
+      let modifiedMenu = [...action.payload];
+      // console.log('state menu', state.menu);
+      let finalMenu = [...action.payload];
+      if (state.menu.length > 0) {
+        finalMenu = modifiedMenu.map((el, i) => {
+          // console.log(el, i);
+          return {
+            ...el,
+            quantity: state.menu[i].quantity,
+            itemTotal: state.menu[i].itemTotal,
+          };
+        });
+      }
+      // console.log(modifiedMenu);
       return {
         ...state,
-        menu: [...action.payload],
+        menu: [...finalMenu],
       };
+
+    case SharedActions.ADD_MENU:
+      // console.log(action.payload);
+      const addMenu = [...state.menu];
+      addMenu.push({ ...action.payload });
+      // console.log(addMenu);
+      return {
+        ...state,
+        menu: [...addMenu],
+      };
+
     case SharedActions.INC_COUNT:
       //console.log(state);
       const item = state.menu[action.payload];

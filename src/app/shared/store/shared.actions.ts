@@ -8,6 +8,8 @@ export const PLACE_ORDER = '[Shared] Place Order';
 export const CLEAR_STATE = ' [Shared] Clear State';
 export const FETCH_MENU = '[Shared] Fetch Menu';
 export const SAVE_MENU = '[Shared] Save Menu';
+export const POST_MENU = '[Shared] Post Menu';
+export const ADD_MENU = '[Shared] Add Menu';
 
 export class FetchMenu implements Action {
   readonly type = FETCH_MENU;
@@ -15,6 +17,16 @@ export class FetchMenu implements Action {
 export class SaveMenu implements Action {
   readonly type = SAVE_MENU;
   constructor(public payload: Menu[]) {}
+}
+export class PostMenu implements Action {
+  readonly type = POST_MENU;
+  constructor(
+    public payload: { name: string; price: number; ingredients: [] }
+  ) {}
+}
+export class AddMenu implements Action {
+  readonly type = ADD_MENU;
+  constructor(public payload: Menu) {}
 }
 export class IncrementCount implements Action {
   readonly type = INC_COUNT;
@@ -42,4 +54,6 @@ export type SharedActions =
   | PlaceOrder
   | ClearState
   | FetchMenu
-  | SaveMenu;
+  | SaveMenu
+  | PostMenu
+  | AddMenu;

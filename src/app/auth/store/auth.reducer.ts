@@ -20,6 +20,7 @@ export function authReducer(
       const user = new User(
         action.payload.email,
         action.payload.userId,
+        action.payload.role,
         action.payload.token,
         action.payload.expiryDate
       );

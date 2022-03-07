@@ -17,6 +17,7 @@ export interface AuthResponseData {
     createdAt: string;
     updatedAt: string;
     __v: number;
+    role: string;
   };
   token: string;
   expiresIn: string;
@@ -26,15 +27,17 @@ const handleAuthentication = (
   expiresIn: number,
   email: string,
   userId: string,
-  token: string
+  token: string,
+  role: string
 ) => {
   const expiryDate = new Date(new Date().getTime() + expiresIn * 1000);
-  const user = new User(email, userId, token, expiryDate);
+  const user = new User(email, userId, role, token, expiryDate);
   localStorage.setItem('userData', JSON.stringify(user));
   return new AuthActions.AuthenticationSuccess({
     email: email,
     userId: userId,
     token: token,
+    role: role,
     expiryDate: expiryDate,
     redirect: true,
   });
@@ -71,7 +74,8 @@ export class AuthEffects {
                 +resData.expiresIn,
                 resData.user.email,
                 resData.user._id,
-                resData.token
+                resData.token,
+                resData.user.role
               );
             }),
             catchError((errorRes) => {
@@ -105,7 +109,8 @@ export class AuthEffects {
                   +resData.expiresIn,
                   resData.user.email,
                   resData.user._id,
-                  resData.token
+                  resData.token,
+                  resData.user.role
                 );
               }),
               catchError((errorRes) => {
@@ -127,6 +132,7 @@ export class AuthEffects {
         const loadedUser = new User(
           userData.email,
           userData.id,
+          userData.role,
           userData._token,
           new Date(userData._tokenExpirationDate)
         );
@@ -141,6 +147,7 @@ export class AuthEffects {
             email: loadedUser.email,
             userId: loadedUser.id,
             token: loadedUser.token,
+            role: loadedUser.role,
             expiryDate: new Date(userData._tokenExpirationDate),
             redirect: false,
           });

@@ -17,6 +17,7 @@ export class AuthenticationSuccess implements Action {
       email: string;
       userId: string;
       token: string;
+      role: string;
       expiryDate: Date;
       redirect: boolean;
     }
