@@ -21,6 +21,8 @@ import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { SharedModule } from './shared/shared.module';
 import { SharedEffects } from './shared/store/shared.effects';
 import { MenuAddComponent } from './menu/menu-add/menu-add.component';
+import { ErrorComponent } from './error/error.component';
+import { ErrorInterceptor } from './error-interceptor';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { MenuAddComponent } from './menu/menu-add/menu-add.component';
     AuthComponent,
     MenuComponent,
     MenuAddComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,6 +50,11 @@ import { MenuAddComponent } from './menu/menu-add/menu-add.component';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
       multi: true,
     },
   ],

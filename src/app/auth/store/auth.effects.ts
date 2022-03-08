@@ -63,12 +63,12 @@ export class AuthEffects {
             password: signupAction.payload.password,
           })
           .pipe(
-            tap((resData) => {
-              this.authService.setLogoutTimer(
-                +resData.expiresIn * 1000,
-                resData.token
-              );
-            }),
+            // tap((resData) => {
+            //   this.authService.setLogoutTimer(
+            //     +resData.expiresIn * 1000,
+            //     resData.token
+            //   );
+            // }),
             map((resData) => {
               return handleAuthentication(
                 +resData.expiresIn,
@@ -98,13 +98,13 @@ export class AuthEffects {
               password: authData.payload.password,
             })
             .pipe(
-              tap((resData) => {
-                console.log('here setting logout timer');
-                this.authService.setLogoutTimer(
-                  +resData.expiresIn * 1000,
-                  resData.token
-                );
-              }),
+              // tap((resData) => {
+              //   console.log('here setting logout timer');
+              //   this.authService.setLogoutTimer(
+              //     +resData.expiresIn * 1000,
+              //     resData.token
+              //   );
+              // }),
               map((resData) => {
                 return handleAuthentication(
                   +resData.expiresIn,
@@ -138,11 +138,11 @@ export class AuthEffects {
           new Date(userData._tokenExpirationDate)
         );
         if (loadedUser.token) {
-          const expiresIn =
-            new Date(userData._tokenExpirationDate).getTime() -
-            new Date().getTime();
-          console.log('here setting logout timer for auto login', expiresIn);
-          this.authService.setLogoutTimer(expiresIn, loadedUser.token);
+          // const expiresIn =
+          //   new Date(userData._tokenExpirationDate).getTime() -
+          //   new Date().getTime();
+          // console.log('here setting logout timer for auto login', expiresIn);
+          // this.authService.setLogoutTimer(expiresIn, loadedUser.token);
           //console.log('ere');
           //this.user.next(loadedUser);
           return new AuthActions.AuthenticationSuccess({
@@ -173,6 +173,21 @@ export class AuthEffects {
     { dispatch: false }
   );
 
+  tokenLogout = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(AuthActions.TOKEN_LOGOUT),
+        tap(() => {
+          localStorage.removeItem('userData');
+          this.router.navigate(['/auth']);
+        })
+      );
+    },
+    {
+      dispatch: false,
+    }
+  );
+
   authLogout = createEffect(
     () => {
       return this.actions$.pipe(
@@ -190,7 +205,7 @@ export class AuthEffects {
             )
             .pipe(
               tap(() => {
-                this.authService.clearLogoutTimer();
+                // this.authService.clearLogoutTimer();
                 localStorage.removeItem('userData');
                 this.router.navigate(['/auth']);
               })

@@ -30,6 +30,7 @@ export function authReducer(
         user: user,
         loading: false,
       };
+    case AuthActions.TOKEN_LOGOUT:
     case AuthActions.LOGOUT:
       // console.log(state.user);
       return {

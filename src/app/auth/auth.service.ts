@@ -11,15 +11,15 @@ export class AuthService {
   private tokenExpiratinTimer: any;
   constructor(private store: Store<FromApp.AppState>) {}
 
-  setLogoutTimer(expirationDuration: number, token: string) {
-    this.tokenExpiratinTimer = setTimeout(() => {
-      this.store.dispatch(new AuthACtions.Logout(token));
-    }, expirationDuration);
-  }
-  clearLogoutTimer() {
-    if (this.tokenExpiratinTimer) {
-      clearTimeout(this.tokenExpiratinTimer);
-      this.tokenExpiratinTimer = null;
-    }
-  }
+  // setLogoutTimer(expirationDuration: number, token: string) {
+  //   this.tokenExpiratinTimer = setTimeout(() => {
+  //     this.store.dispatch(new AuthACtions.Logout(token));
+  //   }, expirationDuration);
+  // }
+  // clearLogoutTimer() {
+  //   if (this.tokenExpiratinTimer) {
+  //     clearTimeout(this.tokenExpiratinTimer);
+  //     this.tokenExpiratinTimer = null;
+  //   }
+  // }
 }

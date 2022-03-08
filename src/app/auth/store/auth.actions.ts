@@ -8,6 +8,7 @@ export const AUTHENTICATION_FAIL = '[Auth] Login Fail';
 export const LOGOUT = '[Auth] Logout';
 export const CLEAR_ERROR = '[Auth] Clear Error';
 export const AUTO_LOGIN = '[Auth] Auto Login';
+export const TOKEN_LOGOUT = '[Auth] Token Logout';
 
 export class AuthenticationSuccess implements Action {
   readonly type = AUTHENTICATION_SUCCESS;
@@ -22,6 +23,10 @@ export class AuthenticationSuccess implements Action {
       redirect: boolean;
     }
   ) {}
+}
+
+export class TokenLogout implements Action {
+  readonly type = TOKEN_LOGOUT;
 }
 
 export class Logout implements Action {
@@ -54,4 +59,5 @@ export type AuthActions =
   | AuthenticationFail
   | SignupStart
   | ClearError
-  | AutoLogin;
+  | AutoLogin
+  | TokenLogout;
