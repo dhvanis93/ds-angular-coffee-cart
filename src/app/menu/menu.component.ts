@@ -8,6 +8,7 @@ import * as SharedActions from '../shared/store/shared.actions';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { MenuAddComponent } from './menu-add/menu-add.component';
+import { DialogComponent } from '../shared/dialog/dialog.component';
 
 @Component({
   selector: 'app-menu',
@@ -72,12 +73,51 @@ export class MenuComponent implements OnInit, OnDestroy {
   // }
 
   onAddMenu() {
-    const dialogRef = this.dialog.open(MenuAddComponent, { width: '80%' });
+    const dialogRef = this.dialog.open(MenuAddComponent, {
+      width: '80%',
+      data: {
+        mode: 'add',
+      },
+    });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         // console.log('Menu is added!');
         // console.log(result);
         this.store.dispatch(new SharedActions.PostMenu(result));
+      }
+    });
+  }
+
+  onEditMenu(item: Menu) {
+    // console.log('menu edited');
+    const dialogRef = this.dialog.open(MenuAddComponent, {
+      width: '80%',
+      data: {
+        mode: 'edit',
+        item,
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // console.log('Menu is added!');
+        console.log(result);
+        // this.store.dispatch(new SharedActions.PostMenu(result));
+        this.store.dispatch(
+          new SharedActions.EditMenu({ id: item._id, menu: result })
+        );
+      }
+    });
+  }
+  onDeleteMenu(id: string) {
+    // console.log('menu deleted');
+    const dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        message: 'Are you sure do you want to delete this item from Menu?',
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.store.dispatch(new SharedActions.DeleteMenu(id));
       }
     });
   }

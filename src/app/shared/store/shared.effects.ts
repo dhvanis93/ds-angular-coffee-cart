@@ -24,6 +24,7 @@ export class SharedEffects {
         // console.log(menu);
         const modifiedMenu = menu.map((el) => {
           return {
+            _id: el._id,
             name: el.name,
             price: el.price,
             ingredients: el.ingredients,
@@ -44,6 +45,7 @@ export class SharedEffects {
         return this.http.post<{
           message: string;
           data: {
+            _id: string;
             name: string;
             price: number;
             ingredients: { name: string; quantity: number }[];
@@ -61,6 +63,33 @@ export class SharedEffects {
       })
     );
   });
+
+  deleteMenu = createEffect(() => {
+    return this.action$.pipe(
+      ofType(SharedActions.DELETE_MENU),
+      switchMap((deleteID: SharedActions.DeleteMenu) => {
+        return this.http.delete(`${apiURL}menu/delete/${deleteID.payload}`);
+      }),
+      map(() => {
+        return new SharedActions.FetchMenu();
+      })
+    );
+  });
+
+  editMenu = createEffect(() => {
+    return this.action$.pipe(
+      ofType(SharedActions.EDIT_MENU),
+      switchMap((editMenu: SharedActions.EditMenu) => {
+        return this.http.put(`${apiURL}menu/edit/${editMenu.payload.id}`, {
+          ...editMenu.payload.menu,
+        });
+      }),
+      map(() => {
+        return new SharedActions.FetchMenu();
+      })
+    );
+  });
+
   constructor(
     private action$: Actions,
     private http: HttpClient,

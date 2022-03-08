@@ -32,8 +32,28 @@
       >
         <div>
           <li class="list-group-item">
-            <h4 class="list-group-item-heading">{{ item.name }}</h4>
-
+            <div
+              class="list-group-item-heading"
+              style="display: flex; flex-direction: row; margin-bottom: 1%"
+            >
+              <span
+                style="font-size: larger; font-weight: bold; flex: 1 1 auto"
+                >{{ item.name }}</span
+              >
+              <span style="margin-right: 1%" *ngIf="isAdmin"
+                ><img
+                  src="../../assets//images/edit-icon.png"
+                  style="cursor: pointer"
+                  (click)="onEditMenu(item)"
+              /></span>
+              <span *ngIf="isAdmin"
+                ><img
+                  src="../../assets//images/delete-icon.png"
+                  style="cursor: pointer"
+                  (click)="onDeleteMenu(item._id)"
+              /></span>
+            </div>
+            <!-- <h4 class="list-group-item-heading">{{ item._id }}</h4> -->
             <!-- <span class="quantity badge"> -->
             <span
               class="badge count"

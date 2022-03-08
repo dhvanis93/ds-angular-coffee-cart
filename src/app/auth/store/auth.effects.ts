@@ -99,6 +99,7 @@ export class AuthEffects {
             })
             .pipe(
               tap((resData) => {
+                console.log('here setting logout timer');
                 this.authService.setLogoutTimer(
                   +resData.expiresIn * 1000,
                   resData.token
@@ -140,6 +141,7 @@ export class AuthEffects {
           const expiresIn =
             new Date(userData._tokenExpirationDate).getTime() -
             new Date().getTime();
+          console.log('here setting logout timer for auto login', expiresIn);
           this.authService.setLogoutTimer(expiresIn, loadedUser.token);
           //console.log('ere');
           //this.user.next(loadedUser);

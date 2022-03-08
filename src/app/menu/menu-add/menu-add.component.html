@@ -1,5 +1,7 @@
 <div class="col-xs-12">
-  <h2 mat-dialog-title>Add New Coffe In Menu</h2>
+  <h2 mat-dialog-title>
+    {{ data.mode === "add" ? "Add New Coffe In Menu" : "Update Menu" }}
+  </h2>
   <div mat-dialog-content>
     <form [formGroup]="menuAddForm">
       <div class="row">
@@ -23,10 +25,10 @@
               placeholder="Enter price of coffee here"
               type="number"
               formControlName="price"
-              min="0"
+              min="1"
             />
             <mat-error *ngIf="menuAddForm.get('price').invalid"
-              >Price must be non-negative</mat-error
+              >Price must be greater than 0</mat-error
             >
           </mat-form-field>
         </div>

@@ -10,6 +10,8 @@ export const FETCH_MENU = '[Shared] Fetch Menu';
 export const SAVE_MENU = '[Shared] Save Menu';
 export const POST_MENU = '[Shared] Post Menu';
 export const ADD_MENU = '[Shared] Add Menu';
+export const EDIT_MENU = '[Shared] Edit Menu';
+export const DELETE_MENU = '[Shared] Delete Menu';
 
 export class FetchMenu implements Action {
   readonly type = FETCH_MENU;
@@ -27,6 +29,14 @@ export class PostMenu implements Action {
 export class AddMenu implements Action {
   readonly type = ADD_MENU;
   constructor(public payload: Menu) {}
+}
+export class EditMenu implements Action {
+  readonly type = EDIT_MENU;
+  constructor(public payload: { menu: Menu; id: string }) {}
+}
+export class DeleteMenu implements Action {
+  readonly type = DELETE_MENU;
+  constructor(public payload: string) {}
 }
 export class IncrementCount implements Action {
   readonly type = INC_COUNT;
@@ -56,4 +66,6 @@ export type SharedActions =
   | FetchMenu
   | SaveMenu
   | PostMenu
-  | AddMenu;
+  | AddMenu
+  | EditMenu
+  | DeleteMenu;
