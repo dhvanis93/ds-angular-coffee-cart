@@ -37,7 +37,7 @@ export class AuthInterceptorService implements HttpInterceptor {
           headers: req.headers.set('Authorization', `Bearer ${user.token}`),
           // headers: req.headers.set(
           //   'Authorization',
-          //   `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjIxZDc4NGM3MTFmNDc4NjU5ZWI3OWQiLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTY0NjY0MDk0OSwiZXhwIjoxNjQ2NjQ0NTQ5fQ.nNY46GXVJRMqbjyWuiU-GbqbJKElM3CdoQkEl43plzw`
+          //   `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjIxZDRiYWNiM2VjMzkwNjE1YmNjYTIiLCJlbWFpbCI6ImRodmFuaXNoYWgyNjEyQGdtYWlsLmNvbSIsImlhdCI6MTY0NjgwNTA2NCwiZXhwIjoxNjQ2ODA4NjY0fQ.F0UlZi3qB8lgkEAaBaLr1Rpyr7uBGf05qWvU4I9LwMI`
           // ),
         });
         return next.handle(modifiedRequest);
